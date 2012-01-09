@@ -9,6 +9,7 @@ from flaskext.wtf import widgets, RadioField, BooleanField
 from wtfrecaptcha.fields import RecaptchaField
 from werkzeug.datastructures import ImmutableMultiDict
 from jinja2 import Markup, escape
+from datetime import datetime
 
 class MultiCheckboxField(SelectMultipleField):
     widget = widgets.ListWidget(prefix_label=False)
@@ -96,6 +97,7 @@ def register2():
             user.sponsor = form.sponsor.data
             user.grad_date = form.grad_date.data
             user.status = 'pending_sponsor'
+            user.register_date = datetime.today()
             if form.acct_type.data == 'acad':
                 user.add_domain('acad')
             else:
