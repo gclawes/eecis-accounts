@@ -14,8 +14,9 @@ Still to be done, as of final submission:
 	Prompt for dob, birth city on password reset page
 	Make password reset tokens expire after a limited time
 	python-cracklib password strength validator
-	Fix the incomplete e-mail validator in web/wtforms-validators
+	Use EmailOrEmpty validator where we can.
 	Add a sponsor management page for admin
+	
 	
 	Silent rejects
 	

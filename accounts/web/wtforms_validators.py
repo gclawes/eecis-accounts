@@ -77,17 +77,18 @@ def validate_length_or_empty(min=None, max=None):
             raise ValidationError("Maximum length is " + str(min))
     return validate
 
-old_email = validators.Email()
 def validate_email_or_empty():
     def validate(form, field):
         if field.data == '':
             return
         if '@' not in field.data:
             raise ValidationError("Invalid e-mail address.")
+        v = validators.Email()
+        v(form, field)
     return validate
     
 validators.Date = validate_date
 validators.UniqueColumn = validate_unique_column
 validators.EntryExists = validate_in_table
 validators.LengthOrEmpty = validate_length_or_empty
-validators.Email = validate_email_or_empty
+validators.EmailOrEmpty = validate_email_or_empty
