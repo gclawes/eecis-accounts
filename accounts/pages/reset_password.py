@@ -22,9 +22,9 @@ class RequestResetForm(Form):
                          validators=[validators.Required(),
                                      validators.Length(min=3,max=8),
                                      validators.EntryExists(User, User.username)])
-    dob = TextField('Date of Birth (DD/MM/YY)',
+    dob = TextField('Date of Birth (DD/MM/YYYY)',
                         validators=[validators.Required(),
-                                    validators.Date(format='%m/%d/%y', message='Invalid format. Please use mm/dd/yy.')])
+                                    validators.Date(format='%m/%d/%Y', message='Invalid format. Please use mm/dd/yy.')])
 
 @app.route('/reset_password/', methods=['GET', 'POST'])
 @app.route('/reset_password/token/<string:token>/', methods=['GET', 'POST'])
