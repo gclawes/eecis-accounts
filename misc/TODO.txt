@@ -1,6 +1,6 @@
 Still to be done, as of final submission:
 	No unique e-mail validator for labstaff/admins
-	Add registration date field to Users
+	Show the users registration date in edit pages/listing pages.
 	Add User type (undergrad, faculty, etc.)
 	Add password reset page checks for incomplete accounts
 	Add a way for people to register udel_id

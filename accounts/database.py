@@ -207,6 +207,7 @@ class User(db.Model):
     flags = db.relationship("UserFlag", backref=db.backref('user', lazy='joined'))
     status = db.Column(db.String, db.ForeignKey('account_status.status'))
     reset_token = db.Column(db.String(36), nullable = True, unique = True)
+    register_date = db.Column(db.Date(format='%m/%d/%Y'), nullable = True, unique = False)
     
     def __init__(self, user, password = '', first_name = 'test', last_name = 'user'):
         self.username = user
