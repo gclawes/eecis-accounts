@@ -230,8 +230,6 @@ def edit_user(uid = -1):
     
     if form.is_submitted():
         if form.validate_on_submit():
-            
-            
             if form.username.data != '':
                 user.username = form.username.data
             if form.password.data != '':
@@ -274,7 +272,6 @@ def edit_user(uid = -1):
     form.email.data = user.email
     form.sponsor.data = user.sponsor
     form.grad_date.data = user.grad_date
-    form.status.data = user.status
     if 'acad' in user.get_domains() and not 'research' in user.get_domains():
         form.acct_type.data = 'acad'
     if 'acad' in user.get_domains() and 'research' in user.get_domains():
