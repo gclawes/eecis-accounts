@@ -8,7 +8,6 @@ Still to be done, as of final submission:
 	Add chfn, chshell to the passwd program
 	Make labstaff change password program
 
-	Show password hint on password reset page
 	Prompt for dob, birth city on password reset page
 	Make password reset tokens expire after a limited time
 	python-cracklib password strength validator

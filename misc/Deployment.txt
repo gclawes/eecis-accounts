@@ -19,3 +19,9 @@ Deployment Checklist:
 	    First, read all of the relevent README files, particularly in the scripts/ directory.
 	    Use similar modifications to config.py to point to the proper services
 	    Make the necessary crontab modifications as outlined in the aforementioned README scripts
+
+Cracklib Library:
+	Cracklib requires several hacks to compile on solaris
+	setenv CFLAGS "-D_POSIX_PTHREAD_SEMANTICS"
+	cracklib and ctypescracklib.py are used in this project, both are included in the accounts package,
+	with libcrack.so.2 preocompiled for solaris
