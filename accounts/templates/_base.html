@@ -40,7 +40,12 @@
 				</li>
 			{% endfor %}
 		</ul>
-		{% for message in get_flashed_messages() %}
+		{% if g.user and not g.user.account_details_complete() %}
+		<div class="message">
+		    Your account is missing some information which is required to reset your password and perform other tasks. Please take some time to fill in all your account details.
+		</div>
+		{% endif %}
+    	{% for message in get_flashed_messages() %}
 		<div class="message">
 			{{ message }}
 		</div>

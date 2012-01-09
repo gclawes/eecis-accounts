@@ -190,6 +190,13 @@ class User(db.Model):
     def has_flag(self, flag):
         return domain in self.get_domains()
         
+    def account_details_complete(self):
+        if self.email is None:
+            return False
+        if self.birth_city is None:
+            return False
+        return True
+        
     
     username = db.Column(db.String(8), unique = True, primary_key = True, nullable = False)
     first_name = db.Column(db.String(30), nullable = False)
