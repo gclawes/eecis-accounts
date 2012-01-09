@@ -80,6 +80,9 @@ def reset_password(token = None):
         if form.is_submitted():
             if form.validate():
                 user = User.query.get(form.username.data)
+                if not user.account_details_complete():
+                    form = RequestResetForm(ImmutableMultiDict())
+                    return render_template('reset_password.html', form=form, error="This account is missing information needed to reset the password. Please contact labstaff to have your password reset.")
                 if user.dob != form.dob.data:
                     form = RequestResetForm(ImmutableMultiDict())
                     return render_template('reset_password.html', form=form, error="Invalid information.")
