@@ -8,8 +8,8 @@ import hash
 from datetime import datetime
 
 # Domains which need to handle stuff.
-#domains = ['research', 'acad']
-domains = ['account'] # for testing, change back later
+# domains = ['research', 'acad']
+domains = ['account'] # TODO: for testing, change back later
 
 status_paths = defaultdict(lambda: (set(), 'error'), {
     'pending_sponsor' : ({'sponsor_approved'}, 'pending_admin'),
@@ -33,7 +33,6 @@ def name_sort(u1, u2):
             return 1
         else:
             return 0
-    
 
 def get_sponsors(labstaff = False):
     """
@@ -90,6 +89,15 @@ class User(db.Model):
     @property
     def grad_date(self):
         return self._grad_date.strftime('%m/%Y')
+
+    def default_gecos(self):
+        name = " ".join([self.first_name, self.last_name])
+        if 'research' in self.get_domains():
+            return ",".join([name, "", "", "eecis"])
+        elif 'acad' in self.get_domains():
+            return ",".join([name, "", "", "acad.ece"])
+        else:
+            return ",".join([name, "", "", ",".join(self.get_domains())])
     
     @grad_date.setter
     def grad_date(self, date):
@@ -185,6 +193,7 @@ class User(db.Model):
     dob = db.Column(db.String(10), nullable = False)
     hashes = db.relationship("AccountHash", backref='user')
     shell = db.Column(db.String(50), nullable = True)
+    gecos = db.Column(db.string(50), nullable = True)
     
     sponsor = db.Column(db.String(8), db.ForeignKey('user.username'))
     _uid = db.Column('uid', db.Integer(32))
@@ -205,6 +214,7 @@ class User(db.Model):
             self.password = password
         self.first_name = first_name
         self.last_name = last_name
+        self.gecos = self.default_gecos()
         self.dob = '01/01/1990'
         self.gid = -1
         self.pending = True
