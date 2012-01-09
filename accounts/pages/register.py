@@ -6,6 +6,7 @@ from flask import jsonify, session
 from flaskext.wtf import Form, TextField, PasswordField, validators, DateField
 from flaskext.wtf import SelectField, TextAreaField, SelectMultipleField
 from flaskext.wtf import widgets, RadioField, BooleanField
+from wtfrecaptcha.fields import RecaptchaField
 from werkzeug.datastructures import ImmutableMultiDict
 from jinja2 import Markup, escape
 
@@ -45,6 +46,9 @@ class RegisterForm(Form):
     description = TextAreaField('Description of Usage')
     acct_type = RadioField(choices=[('acad', 'Academic'), ('research', 'Research & Academic')],
                          validators=[validators.Required()])
+    captcha = RecaptchaField(public_key='6LdeFcwSAAAAAJF1ccPQ4j5Y0Q0iVULdXpRArpcp',
+                             private_key='6LdeFcwSAAAAAFv_xLOVLCPAyUQ_abubmG8oUdOw',
+                             secure=True)
                          
 class RegisterIntroForm(Form):
     has_udelid = RadioField('Do you have a UDelNet ID?',
@@ -74,7 +78,7 @@ def register():
 
 @app.route("/register_2/", methods=['GET', 'POST'])
 def register2():
-    form = RegisterForm()
+    form = RegisterForm(captcha={'ip_address' : request.remote_addr})
     if session.get('cas_id', None) is not None:
         if database.User.query.filter(database.User.udel_id == session['cas_id']).count() > 0:
             flash("That UDelNet ID has already registered an account.")

@@ -38,6 +38,22 @@
 				{% else %}
 					{{ render_field(form.email) }}
 				{% endif %}
+				<tr><td class="label">
+            	</td>
+            	<td class="input">
+        	    {{ form.captcha|safe }}
+            	</td>
+            	<td class="errors">
+            	<span id="validate_{{ form.captcha.id }}">
+            		{% if form.captcha.errors %}
+            	    <ul class="errors">
+            	        {% for error in form.captcha.errors %}
+            	            <li>{{ error }}
+            	        {% endfor %}
+            	    </ul>
+            	  {% endif %}
+            	</span>
+            	</td>
 			</table>
 		</fieldset>
 		<input type="submit" value="Go">
