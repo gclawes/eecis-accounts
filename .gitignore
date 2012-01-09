@@ -1,0 +1,20 @@
+
+# /
+/*.pyc
+
+# /accounts_web/
+/accounts_web/*.pyc
+/accounts_web/db.sqlite
+/accounts_web/config.py
+
+# /accounts_web/pages/
+/accounts_web/pages/*.pyc
+
+# /accounts_web/static/
+/accounts_web/static/*.pyc
+
+# /accounts_web/templates/
+/accounts_web/templates/*.pyc
+
+*.pyc
+.DS_Store
