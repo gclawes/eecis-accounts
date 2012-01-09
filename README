@@ -74,6 +74,8 @@ Dependencies:
   Flask
   Flask-SQLAlchemy
   Flask-WTF 
+  wtforms-recaptcha
+  passlib
   pymysql 
   itsdangerous
   Python 2.7

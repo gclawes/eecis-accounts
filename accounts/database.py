@@ -6,19 +6,20 @@ from collections import defaultdict
 from sqlalchemy.sql.expression import asc
 import hash
 from datetime import datetime
+from mail import create_email, change_email
 
 # Domains which need to handle stuff.
 # domains = ['research', 'acad']
 domains = ['account'] # TODO: for testing, change back later
 
-status_paths = defaultdict(lambda: (set(), 'error'), {
-    'pending_sponsor' : ({'sponsor_approved'}, 'pending_admin'),
-    'pending_admin' : ({'admin_approved'}, 'pending_create'),
-    'pending_create' : ({domain+'_created' for domain in domains}, 'active'),
-    'pw_reset' : ({domain+'_reset_password' for domain in domains}, 'active'),
-    'pending_disable' : ({domain+'_noaccess' for domain in domains}, 'disabled'),
-    'disabled' : ({'labstaff_enable'}, 'reactivate'),
-    'pending_enable' : ({domain+'_return_access' for domain in domains}, 'active'),
+status_paths = defaultdict(lambda: (set(), 'error', None), {
+    'pending_sponsor' : ({'sponsor_approved'}, 'pending_admin', None),
+    'pending_admin' : ({'admin_approved'}, 'pending_create', None),
+    'pending_create' : ({domain+'_created' for domain in domains}, 'active', create_email),
+    'pw_reset' : ({domain+'_reset_password' for domain in domains}, 'active', change_email),
+    'pending_disable' : ({domain+'_noaccess' for domain in domains}, 'disabled', None),
+    'disabled' : ({'labstaff_enable'}, 'reactivate', None),
+    'pending_enable' : ({domain+'_return_access' for domain in domains}, 'active', None),
 })
 
 def name_sort(u1, u2):
@@ -168,14 +169,17 @@ class User(db.Model):
             return
         flags = set(self.get_flags()) | {flag}
         path = status_paths[self.status]
-        needed_flags, upgrade_status = path
+        needed_flags, upgrade_status, hook = path
         if flags == needed_flags:
             self.status = upgrade_status
             db.session.add(self)
             for flag in self.flags:
                 db.session.delete(flag)
+            if hook != None:
+                hook(self)
             db.session.commit()
             return
+
         
         new = UserFlag(self.username, flag)
         db.session.add(new)
@@ -208,6 +212,7 @@ class User(db.Model):
     flags = db.relationship("UserFlag", backref=db.backref('user', lazy='joined'))
     status = db.Column(db.String, db.ForeignKey('account_status.status'))
     reset_token = db.Column(db.String(36), nullable = True, unique = True)
+    reset_token_time = db.Column(db.Integer(64))
     register_date = db.Column(db.Date(format='%m/%d/%Y'), nullable = True, unique = False)
     
     def __init__(self, user, password = '', first_name = 'test', last_name = 'user'):
@@ -223,6 +228,7 @@ class User(db.Model):
         self.grad_date = '01/1900'
         self.shell = "/bin/tcsh"
         self.auto_assign_uid()
+        self.reset_token_time = 0
         
     def __repr__(self):
         return '<User %s>' % self.username
