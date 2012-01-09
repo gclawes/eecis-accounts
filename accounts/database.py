@@ -193,7 +193,7 @@ class User(db.Model):
     dob = db.Column(db.String(10), nullable = False)
     hashes = db.relationship("AccountHash", backref='user')
     shell = db.Column(db.String(50), nullable = True)
-    gecos = db.Column(db.string(50), nullable = True)
+    gecos = db.Column(db.String(50), nullable = True)
     
     sponsor = db.Column(db.String(8), db.ForeignKey('user.username'))
     _uid = db.Column('uid', db.Integer(32))
