@@ -1,0 +1,73 @@
+{% extends "_base.html" %}
+{% block head %}
+	{% set ajax_fields = "['username', 'sponsor', 'password', 'grad_date', 'first_name', 'last_name', 'email', 'dob']"|safe %}
+	{% include "_form_verify_ajax.html" %}
+	{% include "_form_password_check.html" %}
+	{% include "_form_render_js.html" %}
+{% endblock %}
+{% from "_util.html" import render_field %}
+{% set active_page = 'edit_user' %}
+{% block title %}Edit User Page{% endblock %}
+
+{% block body %}
+	<div align="center">
+    <h3>Edit User</h3>
+	</div>
+	{% if error %}
+		{{ error }}
+	{% endif %}
+	<form method="POST" action=".">
+		{{ form.hidden_tag() }}
+		{% for section in sections %}
+		<fieldset>
+			<legend>{{ section }}</legend>
+			<table>
+			    {% for label, input, id, errors in display[section] %}
+                	<tr>
+                	    <td class="label"><label for="{{id }}">{{ label }}</label></td>
+                    	<td class="input">{{ input }}</td>
+                    	<td class="errors">
+                    	<span id="validate_{{ id }}">
+                    		{% if errors %}
+                    	    <ul class="errors">
+                    	        {% for error in errors %}
+                    	            <li>{{ error }}
+                    	        {% endfor %}
+                    	    </ul>
+                    	  {% endif %}
+                    	</span>
+                    	</td>
+                    </tr>
+    			{% endfor %}
+    		</table>
+    	</fieldset>
+    	{% endfor %}
+				{{ render_field(form.username, 'username' in enabled_fields) }}
+				{{ render_field(form.sponsor, 'sponsor' in enabled_fields) }}
+				{{ render_field(form.status, False) }}
+				<tr><td class="label"><label for="acct_type">Account Type</label></td>
+				<td class="input"><label for="asdf">{{ ', '.join(edit_user.get_domains()) }}</label></td></tr>
+				{{ render_field(form.grad_date) }}
+			</table>
+		</fieldset>
+		<fieldset>
+			<legend>Personal Information</legend>
+			<table>
+				{{ render_field(form.first_name) }}
+				{{ render_field(form.last_name) }}
+				{{ render_field(form.dob) }}
+				{% if 'cas_id' in session and session['cas_id'] is not none %}
+					{{ render_field(form.email, disabled='disabled') }}
+				{% else %}
+					{{ render_field(form.email) }}
+				{% endif %}
+			</table>
+		</fieldset>
+		<fieldset>
+		    <legend>Disable Account</legend>
+		    <table>
+		    </table>
+		</fieldset>
+		<input type="submit" value="Go">
+	</form>
+{% endblock %}

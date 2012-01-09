@@ -1,0 +1,13 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	var max = 0;
+	$(".input").each(function() {
+		if($(this).width() > max)
+			max = $(this).width();   
+    });
+	if(max < 300) {
+		max = 300
+	}
+    $(".input input[type='text'], .input input[type='password'], .input textarea").width(max);
+});
+</script>

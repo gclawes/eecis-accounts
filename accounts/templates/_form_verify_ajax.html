@@ -1,0 +1,38 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	var fields = {{ ajax_fields }};
+	$.each(fields, function(i, field) {
+		var validate_span = $('#validate_' + field);
+		var func = function() {
+			var t = this;
+			if(this.value != this.lastvalue) {
+				this.lastvalue = this.value
+				if(this.timer)
+					clearTimeout(this.timer);
+				if(t.value == '') {
+				    validate_span.removeClass('error').html('');
+					return;
+				}
+				validate_span.removeClass('error').html('Loading...')
+				this.timer = setTimeout(function() {
+					$.ajax({
+						url: "{{ url_for('json_register_validate') }}" + field,
+						data: 'csrf={{ form.csrf.data }}&data=' + encodeURIComponent(t.value),
+						dataType: 'json',
+						type: 'get',
+						success: function(j) {
+							if(j.okay) {
+								validate_span.html('<img src="{{ url_for('static', filename="icons/accept.png") }}" />');
+							} else {
+								validate_span.html('<img src="{{ url_for('static', filename="icons/cancel.png") }}" />' + j.error);
+							}
+						}
+					})
+				})
+			}
+		}
+		$('#' + field).keyup(func)
+		$('#' + field).blur(func)
+	})
+});
+</script>

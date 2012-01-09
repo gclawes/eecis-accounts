@@ -1,0 +1,61 @@
+{% set menu = [
+	('index', 'Accounts Home')
+			  ] %}
+{% if g.user %}
+	{% if g.user_is_labstaff %}
+		{% do menu.append(('userlist', 'User List')) %}
+        {% do menu.append(('labstaff_add_user', 'Add User')) %}
+		{% do menu.append(('list_pending_users', 'Pending Users')) %}
+        {% do menu.append(('list_upcoming_rolloffs', 'Roll-offs')) %}
+	{% endif %}
+	{% if g.user.in_domain('sponsor') %}
+		{% do menu.append(('list_sponsored_users', 'Sponsored Users')) %}
+		{% do menu.append(('list_sponsored_pending_users', 'Sponsorship Requests')) %}
+	{% endif %}
+	{% do menu.append(('change_password', 'Change Password')) %}
+	{% if g.user.in_domain('acad') and not g.user.in_domain('research') %}
+	    {% do menu.append(('upgrade_account', 'Upgrade Account')) %}
+	{% endif %}
+	{% do menu.append(('edit_user', 'Modify Account')) %}
+	{% do menu.append(('logout', 'Logout ' + g.user.username)) %}
+{% else %}
+	{% do menu.append(('login', 'Login')) %}
+{% endif %}
+{% set active_page = active_page|default('index') %}
+<html>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+	<title>{% block title %}{% endblock %} - EECIS Accounts System</title>
+	{% block head %}{% endblock %}
+</head>
+<body>
+
+<div id="container">
+	<div id="page">
+		<ul class="menu" id="menu_top">
+			{% for page, title in menu %}
+				<li {% if page == active_page %}class="active"{% endif %}>
+					<a href="{{ url_for(page) }}">{{ title }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+		{% for message in get_flashed_messages() %}
+		<div class="message">
+			{{ message }}
+		</div>
+		{% endfor %}
+		<div id="body">
+			{% block body %}{% endblock %}
+		</div>
+		<div>
+			<ul class="menu">
+				<li>EE/CIS Accounts System</li>
+			</ul>
+		<div>
+	</ul>
+			
+</div>
+
+</body>
+</html>

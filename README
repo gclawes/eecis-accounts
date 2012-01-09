@@ -1,0 +1,82 @@
+ECE/CIS Account Management System Documentation
+
+================================================
+Quickstart Guide: 
+================================================ 
+For convenience, some scripts to setup and install all necessary dependencies have
+been provided. The following instructions are the de facto instructions for
+running the software in an environment where all the features are to be tested.
+This must be done on the account VM (account.acad.cis.udel.edu), as CAS authentication relies on the
+software running on the accounts VM.
+
+If you do not wish to run this on the account VM, CAS authentication will be
+broken, so you cannot test password reset or registration for users who have
+udel accounts.
+
+First, make sure you have a checkout of the code.
+
+To run on the accounts VM, first you will need a python virtualenv which
+contains all the dependencies. A script has been provided to automatically
+create and setup the virtualenv, and also to install a recent version of Python
+since the one on the VM is out of date.
+
+Note: this readme assumes you are using a shell such as bash. 
+While it is still possible to use a c shell, the included scripts are not written for it,
+ because setting up the environment dependencies with it is more complicated.
+
+In the root of whichever tag/branch you are attempting to run, execute the
+following: 
+$ /bin/bash misc/virtualenv_setup_solaris.sh 
+$ source ~/python-virtualenv/bin/activate.csh
+
+On future runs, you do not need to run the virtualenv setup, only 
+$ source ~/python-virtualenv/bin/activate.csh
+
+Next, we need to copy the example config file. 
+$ cp accounts/config_example.py   accounts/config.py
+
+All of the defaults should be perfectly fine for your testing. Next, we populate
+the database with some default testing values. 
+$ python accounts --reset-db
+
+Now, you can choose what you wish to run. To see the available options, run the
+following: 
+$ python accounts -h
+
+The majority of the code is the web interface, which you can enable with 
+$ python accounts --server 
+and you can visit at:
+http://account.acad.cis.udel.edu:5050
+
+For scripts, you can see the available scripts by looking at the
+accounts/scripts directory.
+
+And thus concludes the tutorial.
+
+================================================
+OS X/Linux Instructions: 
+================================================
+Prerequisites: Python 2.7 and a build toolchain. If python2.7 does not, for some
+reason, point to a python2.7 executable, you should edit the beginning of
+`./misc/unix.sh`. In the directory that this readme is in (usually trunk or a
+tag), run `./misc/unix.sh`, and then follow the provided instructions. Also
+glance at the above instructions in the quickstart.
+
+================================================
+Windows Instructions: 
+================================================
+ssh into the accounts VM and go back up to the quickstart.
+
+================================================
+Additional Info:
+================================================
+Dependencies:
+  Flask
+  Flask-SQLAlchemy
+  Flask-WTF 
+  pymysql 
+  itsdangerous
+  Python 2.7
+
+Accounts VM: account.acad.cis.udel.edu
+  

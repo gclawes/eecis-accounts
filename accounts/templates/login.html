@@ -1,0 +1,27 @@
+{% from "_util.html" import render_field_without_errors as render_field %}
+{% extends "_base.html" %}
+{% block head %}
+	{{ super() }}
+	{% include "_form_render_js.html" %}
+{% endblock %}
+{% block title %}Login{% endblock %}
+	<div align="center">
+    <h3>Account Log-In</h3>
+	</div>
+{% block body %}
+	{% if error %}
+		{{ error }}
+	{% endif %}
+	<form method="POST" action=".">
+		<fieldset>
+			<legend>Login</legend>
+			{{ form.hidden_tag() }}
+			<table>
+				{{ render_field(form.username) }}
+				{{ render_field(form.password) }}
+			</table>
+			<input type="submit" value="Login">
+		</fieldset>
+	</form>
+	<p align="right"><a href="{{ url_for('reset_password') }}">Request Password Reset</a> </p>
+{% endblock %}

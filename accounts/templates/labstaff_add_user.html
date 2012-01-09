@@ -1,0 +1,41 @@
+{% set active_page = 'labstaff_add_user' %}
+{% from "_util.html" import render_field %}
+{% extends "_base.html" %}
+{% block head %}
+	{% set ajax_fields = "['username', 'sponsor', 'password', 'grad_date', 'acct_type', 'first_name', 'last_name', 'email', 'dob']"|safe %}
+	{% include "_form_verify_ajax.html" %}
+	{% include "_form_password_check.html" %}
+	{% include "_form_render_js.html" %}
+{% endblock %}
+{% block title %}Create an Account{% endblock %}
+{% block body %}
+	{% if error %}
+		{{ error }}
+	{% endif %}
+	<form method="POST" action=".">
+		{{ ajax_fields }}
+		{{ form.hidden_tag() }}
+		<fieldset>
+			<legend>Account Details</legend>
+			<table>
+				{{ render_field(form.username) }}
+				{{ render_field(form.password) }}
+				{{ render_field(form.pw_confirm) }}
+				{{ render_field(form.sponsor) }}
+				{{ render_field(form.acct_type) }}
+				{{ render_field(form.grad_date) }}
+				{{ render_field(form.description) }}
+			</table>
+		</fieldset>
+		<fieldset>
+			<legend>Personal Information</legend>
+			<table>
+				{{ render_field(form.first_name) }}
+				{{ render_field(form.last_name) }}
+				{{ render_field(form.dob) }}
+				{{ render_field(form.email) }}
+			</table>
+		</fieldset>
+		<input type="submit" value="Go">
+	</form>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+{% block title %}Index Page{% endblock %}
+
+{% block body %}
+	<div align="center">
+    <h3>EE/CIS Accounts Home Page</h3>
+	</div>
+    {% if g.user %}
+	{% else %}
+    Don't have an EECIS account? <a href="{{ url_for('register') }}">Apply for an account here.</a><br/><br/><br/>
+    {% endif %}
+{% endblock %}

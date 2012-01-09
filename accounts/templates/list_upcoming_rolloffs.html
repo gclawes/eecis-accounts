@@ -1,0 +1,45 @@
+{% from "_util.html" import render_pagination %}
+{% extends "_base.html" %}
+{% set active_page = 'list_upcoming_rolloffs' %}
+{% block title %}Upcoming Roll-offs Page{% endblock %}
+{% block body %}
+
+{% macro sort_arrows(field) %}
+	<a href="{{ url_for('list_upcoming_rolloffs') }}?sort={{ field }}&amp;dir=asc"><img class="sort {% if sort == field and sort_dir == 'asc' %}sort_selected{% endif %}" src="{{ url_for('static', filename="icons/arrow_up.png") }}"/></a>
+	<a href="{{ url_for('list_upcoming_rolloffs') }}?sort={{ field }}&amp;dir=desc"><img class="sort {% if sort == field and sort_dir == 'desc' %}sort_selected{% endif %}" src="{{ url_for('static', filename="icons/arrow_down.png") }}"/></a>
+{% endmacro %}
+	<div align="center">
+    <h3>Upcoming Roll-offs</h3>
+	</div>
+    <form action="{{ request.url }}" method="POST">
+	{{ form.hidden_tag() }}
+	<table id="users">
+		<tr>
+			<th>Username {{ sort_arrows('username') }}</th>
+			<th>Name {{ sort_arrows('name') }}</th>
+			<th>Sponsor {{ sort_arrows('sponsor') }}</th>
+            <th>Roll-off Date {{ sort_arrows('grad_date') }}</th>
+            <th>Roll-off</th>
+		</tr>
+		<tr>
+			<form action="{{ url_for(active_page) }}" method="GET">
+			<th>{{ filter_form.username() }}</th>
+			<th>{{ filter_form.last_name() }}</th>
+			<th>{{ filter_form.sponsor() }}</th>
+            <th>{{ filter_form.grad_date() }}</th>
+			</form>
+		</tr>
+		{% for user in page.items %}
+			<tr class="table_{{ loop.cycle('odd', 'even') }}">
+				<td><a href="/edit/{{user.uid}}">{{ user.username }}</a></td>
+				<td>{{ user.last_name }}, {{ user.first_name }}</td>
+				<td>{{ user.sponsor }}</td>
+                <td>{{ user.grad_date }}</td>
+                <td>{{ user.checkbox }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+	
+	{{ render_pagination(page, 'list_upcoming_rolloffs') }}
+    <input type="submit" Value="Submit" />
+{% endblock %}

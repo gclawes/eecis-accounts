@@ -1,0 +1,39 @@
+{% from "_util.html" import render_pagination %}
+{% extends "_base.html" %}
+{% set active_page = 'list_sponsored_pending_users' %}
+{% block title %}Sponsorship Requests{% endblock %}
+{% block body %}
+
+{% macro sort_arrows(field) %}
+	<a href="{{ url_for('list_sponsored_pending_users') }}?sort={{ field }}&amp;dir=asc"><img class="sort {% if sort == field and sort_dir == 'asc' %}sort_selected{% endif %}" src="{{ url_for('static', filename="icons/arrow_up.png") }}"/></a>
+	<a href="{{ url_for('list_sponsored_pending_users') }}?sort={{ field }}&amp;dir=desc"><img class="sort {% if sort == field and sort_dir == 'desc' %}sort_selected{% endif %}" src="{{ url_for('static', filename="icons/arrow_down.png") }}"/></a>
+{% endmacro %}
+	<div align="center">
+    <h3>Sponsorship Requests</h3>
+	</div>
+	<form action="{{ request.url }}" method="POST">
+	{{ form.hidden_tag() }}
+	<table id="list_sponsored_pending_users">
+		<tr>
+			<th>Username {{ sort_arrows('username') }}</th>
+			<th>Name {{ sort_arrows('name') }}</th>
+			<th>E-mail {{ sort_arrows('email') }}</th>
+			<th>Domain</th>
+			<th>Approve/Postpone/Deny Account</th>
+		</tr>
+		{% for user in page.items %}
+			<tr class="table_{{ loop.cycle('odd', 'even') }}">
+				<td><a href="/edit/{{user.uid}}">{{ user.username }}</a></td>
+				<td>{{ user.last_name }}, {{ user.first_name }}</td>
+				<td>{{ user.email }}</td>
+				<td>{{ ', '.join(user.get_domains()) }}</td>
+				<td>{{ user.radio() }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+	
+	{{ render_pagination(page, 'list_sponsored_pending_users') }}
+	<input type="submit" Value="Submit" />
+	</form>
+
+{% endblock %}

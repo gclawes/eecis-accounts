@@ -1,0 +1,3 @@
+This directory contains html templates that are used to render the web
+application. Templates with a _ prepended to the name are for use by other
+templates as either bases or includes.

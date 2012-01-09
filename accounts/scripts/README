@@ -1,0 +1,29 @@
+These are the backend scripts that run on the ypmasters for each domain,
+as well as scripts used for migration.
+
+create.py - runs as root on each ypmaster (dilbert, devil-rays)
+    and handles account creation. 
+
+process-changes.py - run as part of passwd.time in /var/yp/Makefile 
+    on each ypmaster before NIS maps are created.  
+    It processes changes to logins such as password, 
+    shell, and GECOS changes.  Changes are applied to all login 
+    methods in auth_modules (see auth_modules/README).
+
+    This replaces the spasswd processing script, password changes
+    now follow the same code path for web and command-line changes.
+
+remind.py - Runs on ONE ypmaster server (dilbert) and sends notifications
+    to faculty sponsors if they have user applications awaiting approval.
+
+
+rolloff.py - interface for starring passwords for rolloffs, and marking 
+    rolled-off accounts in the database.
+    NOT YET IMPLEMENTED.
+
+Migration scripts:
+    import_old_db.py - used for migrating old web DB
+    import_passwd.py - used for importing current NIS maps to DB
+
+
+

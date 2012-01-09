@@ -1,0 +1,21 @@
+Deployment Checklist:
+    This checklist is for deployment on production systems. Any testing deployment should be done using the same virtualenvs and instructions provided in the other README files. This deployment guideline is for use by Graeme and Ben Miller to actually deploy.
+
+	Web Zone:
+		Install a python prefixed into the chroot
+		Install the necessary depdencies into the prefixed python install
+		Update all relevent options in config.py
+		Modify the .wsgi file to point to the prefix python install and the absolute path of the accounts directory
+		Modify httpd.conf to use the wsgi file
+		Modify accounts/scripts/import_passwd.py to point to your accounts.txt and research.txt NIS maps
+		Modify accounts/scripts/import_old_db.py to point to the old MySQL database
+			python accounts -r
+			python accounts -s import_passwd
+			python accounts -s import_old_db
+		(If the htpasswd file used it not called htpasswd, that needs to be changed in code. Similarly for htgroup)
+	    Start Apache
+	
+	Login Servers:
+	    First, read all of the relevent README files, particularly in the scripts/ directory.
+	    Use similar modifications to config.py to point to the proper services
+	    Make the necessary crontab modifications as outlined in the aforementioned README scripts

@@ -1,0 +1,48 @@
+{% macro render_field(field, enabled = True) %}
+	<tr><td class="label">
+	{{ field.label }}
+	</td>
+	<td class="input">
+    {% if not enabled %}
+        {{ field(disabled='disabled') }}
+    {% else %}
+	    {{ field() }}
+	{% endif %}
+	</td>
+	<td class="errors">
+	<span id="validate_{{ field.id }}">
+		{% if field.errors %}
+	    <ul class="errors">
+	        {% for error in field.errors %}
+	            <li>{{ error }}
+	        {% endfor %}
+	    </ul>
+	  {% endif %}
+	</span>
+	</td>
+{% endmacro %}
+
+{% macro render_field_without_errors(field) %}
+	<tr><td class="label">
+	{{ field.label }}
+	</td>
+	<td class="input">
+	{{ field(**kwargs) }}
+	</td>
+{% endmacro %}
+
+{% macro render_pagination(pagination, endpoint) %}
+  <div class=pagination>
+  {% for page in pagination.iter_pages(right_current=2) %}
+    {% if page %}
+      {% if page != pagination.page %}
+        <a href="{{ url_for(endpoint, page=page) }}">{{ page }}</a>
+      {% else %}
+        <strong>{{ page }}</strong>
+      {% endif %}
+    {% else %}
+      <span class=ellipsis>…</span>
+    {% endif %}
+  {%- endfor %}
+  </div>
+{% endmacro %}

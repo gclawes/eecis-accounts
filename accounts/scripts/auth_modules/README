@@ -1,0 +1,28 @@
+These modules all provide an interface for the account scripts 
+to interact with the login systems.
+This interface is described in stub_auth.py, which is never called by the scripts.
+
+Each module contains settings specific to that module, 
+these should be modified depending on what domain they are deployed on.
+
+Current modules are:
+nis_unix.py:
+	-Interface with NIS source files in /var/yp/src
+	-New accounts are added to /var/yp/src/{passwd+,group+}
+	-Changes (password/shell/gecos) are applied to /var/yp/src/{password,group}.local
+	-Deletes are applied to /var/yp/src/{password,group}.local
+
+ldap_unix.py:
+	-Adds entries to the LDAP server running on the ypmaster for a domain
+	-This module directly calls the external ldap programs (ldapmodify,ldapadd)
+		As such, it contains the LDAP password and should be protected.
+	-The information in unix LDAP mirrors that in NIS
+	-This module does NOT add NTLM passwords
+
+ldap_smb.py:
+	-Adds entries to the Samba LDAP server running on smb-ldap1, which is replicated to
+		smb-ldap1.acad.ece.
+	-This module should only be run on the acad ypmaster, because all research accounts
+		are also acad accounts
+	-This module does NOT add unix passwords!
+

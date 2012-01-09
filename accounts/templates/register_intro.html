@@ -1,0 +1,90 @@
+{% from "_util.html" import render_field %}
+{% extends "_base.html" %}
+{% set active_page = 'register' %}
+{% block title %}Register Account{% endblock %}
+{% block body %}
+<center>
+<h3>Register an EE/CIS Account</h3>
+<h3><em>Information and Guidelines for your Computer Account</em></h3>
+</center>
+
+<ol>
+
+  <li>All persons receiving accounts must submit a valid account form
+    electronically, with faculty approval.  <b>All questions
+    must</b> be answered in order to process your request.
+  <p>
+  <li> The account
+    will normally be activated within 24 hours from the time of receiving
+    a valid, faculty approved form.
+  <p>
+  <li><b>Your login will be</b> your last name, or the first eight characters
+    of your last name, whichever is shorter.  Note that someone may already
+    have an account with the same name as you.  When this happens, the
+    account is given the first character(s) of your first name, and your
+    last name, with the total length limited to eight characters.
+  <p>
+  <li><b>Your initial password will be</b> chosen by you.  The form will
+    enforce some rules so you will choose a strong password.
+  <p>
+
+  <li>All University computing resources are under the auspice of the
+    <a href="http://www.udel.edu/ExecVP/polprod/1-14.html">
+    Policy for Responsible Computing</a>.
+    If you use the lab facilities in an
+    inappropriate manner, your computing privileges will be revoked.  In
+    addition the offender(s) may also be taken before the campus Judicial
+    Board.  Examples of using lab facilities in an inappropriate manner
+    include, but are not restricted to the following:
+    <p>
+    <ul>
+      <li>Allowing someone else to use your account.
+      <p>
+      <li>Accessing files without permission.  Note that you should get
+           permission from the owner of a file before you access a file.
+	   Just because you are able to read a file on the system does not
+	   mean that you have been given permission to read the file.
+      <p>
+      <li>Writing, copying, or storing programs that can be used to violate the privacy of other users, even if these programs are never used.
+    </ul>
+
+  <p>
+  <li>The Lab Administration reserves the right to affect any part of the
+    system deemed necessary, by them, to maintain the system integrity.
+  <p>
+  <li>The Lab Administration reserves the right to monitor any part of the
+    network deemed necessary, by them, to maintain the network integrity.  
+    Furthermore, by agreeing to the account terms, you authorized the network
+    data collected ( which may include your traffic) to be used for Research 
+    Purposes.
+  <p>
+  <li>For a research account your account will expire after you have left
+    the University.  For a class account your account will expire at the
+    start of the following semester and it is your responsibility to renew
+    your account through sequential semesters, or your account and files
+    will be considered abandoned.  The files that remain on the system will
+    become the property of the University of Delaware, and the University
+    may use or dispose of the files in whatever manner they see fit.  Any
+    files that you want to keep private should be deleted before your
+    account expires.  Tape drives are available to make copies of your files
+    before you leave the University.
+  <p>
+  <li>You should have received a 
+      <a href="http://www.eecis.udel.edu/wiki/ececis-docs/index.php/Site/UserAccounts">New User Guide</a>
+      with this form that explains more things about the ECE/CIS labs.
+
+</ol>
+
+<b>By applying for an account, I agree to abide by the <a href=http://www.udel.edu/security/policy.html>University Computing Security Policies</a>, and follow
+<a href=http://www.udel.edu/it/security/facultystaff/responsibility.html>University Responsible Computing Guidelines</a> and those contained herein.  Additionally, I agree to abide and enforce
+the mandates for Protecting Personal Non-Public Information <a href=http://www.udel.edu/pnpi> (PNPI)</a> for myself, and any Faculty/Student/Staff data that I may come in contact with.
+</b><br/><br/>
+
+<form method="POST" action=".">
+	{{ form.hidden_tag() }}
+	{{ form.has_udelid.label }}<br />
+	{{ form.has_udelid }} <br /><br /> 
+ 	<input type="submit" name="submit" value="submit">
+</form>
+	
+{% endblock %}
