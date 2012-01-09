@@ -101,6 +101,7 @@ def main():
             user.first_name = first_name
             user.last_name = last_name
             user.status = 'web_only'
+            user.birth_city = birthplace
         
         if sponsor in staff_sponsors or sponsor == '':
             sponsor = 'staff'

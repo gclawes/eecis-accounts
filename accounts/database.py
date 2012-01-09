@@ -191,6 +191,7 @@ class User(db.Model):
     first_name = db.Column(db.String(30), nullable = False)
     last_name = db.Column(db.String(30), nullable = False)
     dob = db.Column(db.String(10), nullable = False)
+    birth_city = db.Column(db.String(80))
     hashes = db.relationship("AccountHash", backref='user')
     shell = db.Column(db.String(50), nullable = True)
     gecos = db.Column(db.String(50), nullable = True)
