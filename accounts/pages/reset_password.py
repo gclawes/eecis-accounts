@@ -5,6 +5,7 @@ from accounts.mail import send_token
 from flaskext.wtf import Form, TextField, PasswordField, validators
 from werkzeug.datastructures import ImmutableMultiDict
 from uuid import uuid4
+from time import time
 
 class ResetForm(Form):
     password = PasswordField('Password',
@@ -40,9 +41,15 @@ def reset_password(token = None):
                 session.pop('reset_password')
                 flash("There was an error when trying to reset your password. Make sure you are using the same browser you requested the password reset in.")
                 return redirect(url_for('index'))
+            elif user.reset_token_time != 0 and (int(time()) - 1800) > user.reset_token_time:
+                print "reset_token_time: %d %d " % (user.reset_token_time, int(time()))
+                session.pop('cas_id', None)
+                session.pop('reset_password')
+                flash("You are attempting to reset with an invalid or expired token, please re-submit your request.")
+                return redirect(url_for("reset_password"))
         elif 'cas_id' in session:
             if session['cas_id'] != user.udel_id:
-                flash("Invalid udel ID")
+                flash("Invalid UDel ID")
                 session.pop('reset_password')
                 session.pop('cas_id', None)
                 return redirect(url_for("reset_password"))
@@ -56,6 +63,8 @@ def reset_password(token = None):
             if form.validate():
                 user.password = form.password.data
                 user.status = 'reset_password'
+                print "reset_token_time: %d" % user.reset_token_time
+                user.reset_token_time = 0
                 db.session.add(user)
                 db.session.commit()
                 flash("Your password has been reset. Please allow time for the servers to reflect the changes.")
@@ -78,6 +87,8 @@ def reset_password(token = None):
                 if user.udel_id is None:
                     token = str(uuid4())
                     user.reset_token = token
+                    user.reset_token_time = time()
+                    print "reset_token_time: %d" % user.reset_token_time
                     db.session.add(user)
                     db.session.commit()
                     # Print this for now so we can test it

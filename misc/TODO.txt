@@ -9,8 +9,7 @@ Still to be done, as of final submission:
 	Make labstaff change password program
 
 	Prompt for dob, birth city on password reset page
-	Make password reset tokens expire after a limited time
-	python-cracklib password strength validator
+	python-cracklib password strength validator - libs installed
 	Fix the incomplete e-mail validator in web/wtforms-validators
 	Add a sponsor management page for admin
 	

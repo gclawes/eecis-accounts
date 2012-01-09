@@ -211,6 +211,7 @@ class User(db.Model):
     flags = db.relationship("UserFlag", backref=db.backref('user', lazy='joined'))
     status = db.Column(db.String, db.ForeignKey('account_status.status'))
     reset_token = db.Column(db.String(36), nullable = True, unique = True)
+    reset_token_time = db.Column(db.Integer(64))
     register_date = db.Column(db.Date(format='%m/%d/%Y'), nullable = True, unique = False)
     
     def __init__(self, user, password = '', first_name = 'test', last_name = 'user'):
@@ -226,6 +227,7 @@ class User(db.Model):
         self.grad_date = '01/1900'
         self.shell = "/bin/tcsh"
         self.auto_assign_uid()
+        self.reset_token_time = 0
         
     def __repr__(self):
         return '<User %s>' % self.username
