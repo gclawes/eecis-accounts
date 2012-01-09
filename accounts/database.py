@@ -6,19 +6,20 @@ from collections import defaultdict
 from sqlalchemy.sql.expression import asc
 import hash
 from datetime import datetime
+from mail import create_email, change_email
 
 # Domains which need to handle stuff.
 # domains = ['research', 'acad']
 domains = ['account'] # TODO: for testing, change back later
 
-status_paths = defaultdict(lambda: (set(), 'error'), {
-    'pending_sponsor' : ({'sponsor_approved'}, 'pending_admin'),
-    'pending_admin' : ({'admin_approved'}, 'pending_create'),
-    'pending_create' : ({domain+'_created' for domain in domains}, 'active'),
-    'pw_reset' : ({domain+'_reset_password' for domain in domains}, 'active'),
-    'pending_disable' : ({domain+'_noaccess' for domain in domains}, 'disabled'),
-    'disabled' : ({'labstaff_enable'}, 'reactivate'),
-    'pending_enable' : ({domain+'_return_access' for domain in domains}, 'active'),
+status_paths = defaultdict(lambda: (set(), 'error', None), {
+    'pending_sponsor' : ({'sponsor_approved'}, 'pending_admin', None),
+    'pending_admin' : ({'admin_approved'}, 'pending_create', None),
+    'pending_create' : ({domain+'_created' for domain in domains}, 'active', create_email),
+    'pw_reset' : ({domain+'_reset_password' for domain in domains}, 'active', change_email),
+    'pending_disable' : ({domain+'_noaccess' for domain in domains}, 'disabled', None),
+    'disabled' : ({'labstaff_enable'}, 'reactivate', None),
+    'pending_enable' : ({domain+'_return_access' for domain in domains}, 'active', None),
 })
 
 def name_sort(u1, u2):
@@ -168,14 +169,17 @@ class User(db.Model):
             return
         flags = set(self.get_flags()) | {flag}
         path = status_paths[self.status]
-        needed_flags, upgrade_status = path
+        needed_flags, upgrade_status, hook = path
         if flags == needed_flags:
             self.status = upgrade_status
             db.session.add(self)
             for flag in self.flags:
                 db.session.delete(flag)
+            if hook != None:
+                hook(self)
             db.session.commit()
             return
+
         
         new = UserFlag(self.username, flag)
         db.session.add(new)

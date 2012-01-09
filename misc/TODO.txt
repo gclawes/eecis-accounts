@@ -5,11 +5,9 @@ Still to be done, as of final submission:
 	Add password reset page checks for incomplete accounts
 	Add a way for people to register udel_id
 
-	Add gecos to DB
 	Add chfn, chshell to the passwd program
 	Make labstaff change password program
-	Add post-status change hooks
-	Post-status change hook that alerts user when their account is active
+
 	Show password hint on password reset page
 	Prompt for dob, birth city on password reset page
 	Make password reset tokens expire after a limited time
