@@ -42,32 +42,6 @@
     		</table>
     	</fieldset>
     	{% endfor %}
-				{{ render_field(form.username, 'username' in enabled_fields) }}
-				{{ render_field(form.sponsor, 'sponsor' in enabled_fields) }}
-				{{ render_field(form.status, False) }}
-				<tr><td class="label"><label for="acct_type">Account Type</label></td>
-				<td class="input"><label for="asdf">{{ ', '.join(edit_user.get_domains()) }}</label></td></tr>
-				{{ render_field(form.grad_date) }}
-			</table>
-		</fieldset>
-		<fieldset>
-			<legend>Personal Information</legend>
-			<table>
-				{{ render_field(form.first_name) }}
-				{{ render_field(form.last_name) }}
-				{{ render_field(form.dob) }}
-				{% if 'cas_id' in session and session['cas_id'] is not none %}
-					{{ render_field(form.email, disabled='disabled') }}
-				{% else %}
-					{{ render_field(form.email) }}
-				{% endif %}
-			</table>
-		</fieldset>
-		<fieldset>
-		    <legend>Disable Account</legend>
-		    <table>
-		    </table>
-		</fieldset>
 		<input type="submit" value="Go">
 	</form>
 {% endblock %}
