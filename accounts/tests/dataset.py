@@ -3,7 +3,7 @@ def populate():
     from accounts import db
     
     # Generate the base UID map
-    for i in xrange(1001):
+    for i in xrange(1,1001):
         u = database.UIDMap(i, True)
         db.session.add(u)
     #for i in xrange(1001,4000):
@@ -57,17 +57,20 @@ def populate():
 
     
     # Actual data which will need to be used
-    u = database.User('staff', 'notavalidpassword')
-    u.first_name = 'EECIS'
-    u.last_name = 'Staff'
-    u.email = 'staff@eecis.udel.edu'
-    u.add_domain('sponsor')
-    u.status = 'web_only'
+    # u = database.User('staff')
+    # u.first_name = 'EECIS'
+    # u.last_name = 'Staff'
+    # u.email = 'staff@eecis.udel.edu'
+    # u.add_domain('sponsor')
+    # u.status = 'web_only'
+    # u.password = 'notavalidpassword'
+    # db.session.add(u)
     
-    u = database.User('admin', 'password2')
+    u = database.User('admin')
     u.first_name = 'Admin'
     u.last_name = 'User'
     u.email = 'test2@domain'
+    u.auto_assign_uid()
     u.add_domain('labstaff')
     u.add_domain('sponsor')
     u.add_domain('admin')
@@ -75,46 +78,7 @@ def populate():
     u.add_domain('acad')
     u.status = 'active'
     db.session.add(u)
-
-    u = database.User('joe1', 'notapassword')
-    u.first_name = 'Joe'
-    u.last_name = 'Pending'
-    u.email = 'joe@account.acad.cis.udel.edu'
-    u.add_domain('account')
-    u.status = 'pending_create'
-    db.session.add(u)
-
-    u = database.User('joe2', 'notapassword')
-    u.first_name = 'Joe'
-    u.last_name = 'Password'
-    u.email = 'joe@account.acad.cis.udel.edu'
-    u.add_domain('account')
-    u.status = 'pw_reset'
-    db.session.add(u)
-
-    u = database.User('joe3', 'notapassword')
-    u.first_name = 'Joe'
-    u.last_name = 'Disable'
-    u.email = 'joe@account.acad.cis.udel.edu'
-    u.add_domain('account')
-    u.status = 'pending_disable'
-    db.session.add(u)
-
-    u = database.User('joe4', 'notapassword')
-    u.first_name = 'Joe'
-    u.last_name = 'enable'
-    u.email = 'joe@account.acad.cis.udel.edu'
-    u.add_domain('account')
-    u.status = 'pending_enable'
-    db.session.add(u)
-
-    u = database.User('joe5', 'notapassword')
-    u.first_name = 'Joe'
-    u.last_name = 'rolloff'
-    u.email = 'joe@account.acad.cis.udel.edu'
-    u.add_domain('account')
-    u.status = 'pending_rolloff'
-    db.session.add(u)
+    u.password = 'password2'
 
     db.session.commit()
     db.session.close()    
