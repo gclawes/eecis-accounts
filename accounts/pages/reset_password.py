@@ -25,6 +25,8 @@ class RequestResetForm(Form):
     dob = TextField('Date of Birth (DD/MM/YYYY)',
                         validators=[validators.Required(),
                                     validators.Date(format='%m/%d/%Y', message='Invalid format. Please use mm/dd/yy.')])
+    birth_city = TextField('Birth City',
+                        validators=[validators.Required()])
 
 @app.route('/reset_password/', methods=['GET', 'POST'])
 @app.route('/reset_password/token/<string:token>/', methods=['GET', 'POST'])
@@ -83,7 +85,7 @@ def reset_password(token = None):
                 if not user.account_details_complete():
                     form = RequestResetForm(ImmutableMultiDict())
                     return render_template('reset_password.html', form=form, error="This account is missing information needed to reset the password. Please contact labstaff to have your password reset.")
-                if user.dob != form.dob.data:
+                if user.dob != form.dob.data or user.birth_city != form.birth_city.data:
                     form = RequestResetForm(ImmutableMultiDict())
                     return render_template('reset_password.html', form=form, error="Invalid information.")
                 session['reset_password'] = form.username.data
