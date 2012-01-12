@@ -71,6 +71,8 @@ def populate():
     u.add_domain('labstaff')
     u.add_domain('sponsor')
     u.add_domain('admin')
+    u.add_domain('research')
+    u.add_domain('acad')
     u.status = 'active'
     db.session.add(u)
 
