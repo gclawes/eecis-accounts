@@ -8,6 +8,8 @@ Post Deploy:
 		Add the ability to e-mail all sponsors/account holders
 		Add a way to mark accounts as needing to be actually deleted (admin only)
 
+    passwd/chsh/chfn and labstaff chpasswd.py - all using web api
+
 For Deploy:
     Fix edit user page
         Users request account upgrade

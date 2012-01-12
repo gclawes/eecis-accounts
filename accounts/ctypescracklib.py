@@ -1,6 +1,11 @@
-#!/usr/bin/env python
-#
 #  Cracklib using ctypes
+#  Original credit to:
+# Author: Sean Reifschneider
+# Maintainer: Sean Reifschneider
+# Home Page: https://github.com/linsomniac/python-ctypescracklib 
+# 
+# Modifications by Graeme Lawes (gclawes@udel.edu)
+# and Robert Deaton (rdeaton@udel.edu)
 
 import os
 
@@ -11,11 +16,12 @@ def FascistCheck(passwd, username = None):
 	cracklib.FascistCheck.restype = c_char_p
 
 	dictionary = 'accounts/cracklib/cracklib_dict'
-	if not os.path.exists(dictionary + '.pwd'):
+	#if not os.path.exists(dictionary + '.pwd'):
+	if not os.path.exists(dictionary):
 		raise ValueError('Unable to find dictionary file: "%s"' % dictionary)
 
 	ret = cracklib.FascistCheck(passwd, dictionary)
-	if ret is not None: return ret
+	if ret is not None: return str(ret)
 
 	#  check password against username
 	if username is not None:
@@ -34,39 +40,3 @@ def FascistCheck(passwd, username = None):
 			return 'it is too similar to your username'
 
 	return None
-
-######################
-if __name__ == '__main__':
-	import sys, unittest
-	if not 'test' in sys.argv:
-		sys.stderr.write('ERROR: You need to run with the "test" argument to '
-				'run test suite\n')
-		sys.exit(1)
-
-	print 'test'
-	class testBase(unittest.TestCase):
-		def test_passwords(self):
-			self.assertEqual(FascistCheck('jafo1234', 'jafo'),
-				'it is based on your username')
-			self.assertEqual(FascistCheck('jafo1234', 'ofaj'),
-				'it is based on your username')
-			self.assertEqual(FascistCheck('myjafo123', 'jafo'),
-				'it is based on your username')
-			self.assertEqual(FascistCheck('myofaj123', 'jafo'),
-				'it is based on your username')
-			self.assertEqual(FascistCheck('jxayfoxo', 'jafo'),
-				'it is too similar to your username')
-			self.assertEqual(FascistCheck('jXAyFOxo', 'jafo'),
-				'it is too similar to your username')
-			self.assertEqual(FascistCheck('jafo'),
-				'it is too short')
-			self.assertEqual(FascistCheck('jaf'),
-				'it is WAY too short')
-			self.assertEqual(FascistCheck('secret'),
-				'it is based on a dictionary word')
-			self.assertEqual(FascistCheck('cretse'),
-				'it is based on a dictionary word')
-			self.assertEqual(FascistCheck('jxayfoxo'), None)
-
-	suite = unittest.TestLoader().loadTestsFromTestCase(testBase)
-	unittest.TextTestRunner(verbosity=2).run(suite)

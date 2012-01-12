@@ -7,6 +7,7 @@ validators. They are designed to follow a similar API.
 
 from flaskext.wtf import validators, ValidationError
 from datetime import datetime
+from ctypescracklib import FascistCheck
 
 def validate_date(format = '', message = ''):
     """
@@ -86,9 +87,24 @@ def validate_email_or_empty():
         v = validators.Email()
         v(form, field)
     return validate
+
+def validate_cracklib():
+    """
+    Runs the pasword through cracklib to test strength.
+    """
+    def validate(form, field):
+        if field.data == '':
+            return
+        if ret = FacistCheck(field.data, form.username.data) is not None:
+            error = "Password rejected: %s." % ret
+            raise ValidationError(error)
+        else:
+            return
+    return validate
     
 validators.Date = validate_date
 validators.UniqueColumn = validate_unique_column
 validators.EntryExists = validate_in_table
 validators.LengthOrEmpty = validate_length_or_empty
 validators.EmailOrEmpty = validate_email_or_empty
+validators.CrackLib = validate_cracklib

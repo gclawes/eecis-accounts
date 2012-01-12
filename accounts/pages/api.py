@@ -7,7 +7,8 @@ from flaskext.wtf import Form, PasswordField, validators
 
 class NewPassOnlyForm(Form):
     new_pass = PasswordField('Password', 
-                        validators = [validators.Length(min=8, max=50, message='Password length must be between 8 and 50')])
+                        validators = [validators.Length(min=8, max=50, message='Password length must be between 8 and 50')
+                            validators.CrackLib()])
 
 @app.route('/api/reset_password/', methods=['GET', 'POST'])
 def api_reset_password():

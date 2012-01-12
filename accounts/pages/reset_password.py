@@ -10,7 +10,8 @@ from time import time
 class ResetForm(Form):
     password = PasswordField('Password',
                          validators=[validators.Required(),
-                                     validators.Length(min=8,max=50)])
+                                     validators.Length(min=8,max=50),
+                                     validators.CrackLib()])
     pw_confirm = PasswordField('Confirm Password',
                          validators=[validators.Required(),
                                      validators.Length(min=8,max=50),

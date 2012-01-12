@@ -22,7 +22,8 @@ class RegisterForm(Form):
                                      validators.UniqueColumn(database.User, database.User.username, message='This username is taken.')])
     password = PasswordField('Password',
                          validators=[validators.Required(),
-                                     validators.Length(min=8,max=50)])                                     
+                                     validators.Length(min=8,max=50),
+                                     validators.CrackLib()])                                     
     first_name = TextField('First Name',
                          validators=[validators.Required()])
     last_name = TextField('Last Name',
@@ -214,10 +215,11 @@ def edit_user(uid = -1):
     if g.user_is_admin or g.user_is_labstaff:
         enabled_fields.extend(['comments','sponsor', 'email', 'dob', 'first_name', 'last_name'])
         
-    if g.user_is_admin or g.user_is_labstaff:
+    if g.user_is_admin or g.user_is_labstaff or self_editing:
         enabled_fields.extend(['password', 'pw_confirm'])
         EditForm.password = PasswordField('Password', 
-                        validators = [validators.LengthOrEmpty(min=8, max=50)])                                    
+                        validators = [validators.LengthOrEmpty(min=8, max=50),
+                            validators.CrackLib()])                                    
         EditForm.pw_confirm = PasswordField('Confirm Password',
                         validators = [validators.LengthOrEmpty(min=8, max=50),
                                         validators.EqualTo('password', message='Passwords do not match.')])
