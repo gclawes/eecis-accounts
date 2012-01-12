@@ -1,23 +1,23 @@
-Still to be done, as of final submission:
+Post Deploy:
 	No unique e-mail validator for labstaff/admins
-	Show the users registration date in edit pages/listing pages.
-	Add User type (undergrad, faculty, etc.)
-	Add password reset page checks for incomplete accounts
-	Add a way for people to register udel_id
-
 	Add chfn, chshell to the passwd program
 	Make labstaff change password program
-
-	Prompt for dob, birth city on password reset page
-	python-cracklib password strength validator - libs installed
-	Fix the incomplete e-mail validator in web/wtforms-validators
+	?Fix the incomplete e-mail validator in web/wtforms-validators
 	Add a sponsor management page for admin
-	
-	Silent rejects
-	
 	Rolloff system overhaul:
 		Add the ability to e-mail all sponsors/account holders
 		Add a way to mark accounts as needing to be actually deleted (admin only)
-	Add a form to register mail forwarder accounts/system accounts
-	Add a way for users to modify some of their information (like DOB if it is empty, e-mail address)
-	Add/fix the upgrade account form and logic.
+
+For Deploy:
+    Fix edit user page
+        Users request account upgrade
+        Labstaff upgrade account type
+        Admins disable/reenable accounts
+        Admins add user as a sponsor
+    Create web_only users
+    Cracklib validator
+    User type (undergrad, faculty, etc)
+        + Import
+    Add CAS when a user adds an e-mail address
+    Reject/Silent Rejection Emails
+    
