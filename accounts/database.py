@@ -122,18 +122,24 @@ class User(db.Model):
         db.session.add(map)
         db.session.commit()
         self._uid = -1
+    
+    def get_hash(self):
+        with open(config.htpath + '/htpasswd') as f:
+            for line in f:
+                username, userhash, uid, gid, gecos, home, shell = line.split(':')
+                if username == self.username:
+                    return userhash
+        return None
         
     def verify_password(self, password):
         """
         This function verifies that a user-supplied password is valid.
         TODO: This should verify through NIS at some later date.
         """
-        with open(config.htpath + '/htpasswd') as f:
-            for line in f:
-                username, userhash, uid, gid, gecos, home, shell = line.split(':')
-                if username == self.username:
-                    return hash.verify(password, userhash)
-            return False        
+        userhash = self.get_hash()
+        if userhash is None:
+            return False
+        return hash.verify(password, userhash)
         
         
     def get_hashes(self):
