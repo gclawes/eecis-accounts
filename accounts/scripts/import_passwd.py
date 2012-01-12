@@ -31,15 +31,17 @@ def add_user(line, domain):
         first_name = gecos
         last_name = 'Unknown?'
     
-    u = User.query.get(username)
+    u = User.query.get(username[:8])
     if u is not None:
         d = UserDomain(username, domain)
         db.session.add(d)
         return -1
     u = User(username)
+    uid = int(uid)
+    gid = int(gid)
     u.uid = uid
     u.gid = gid
-    if uid != gid:
+    if uid != gid and gid != 0:
         m = UIDMap.query.get(gid)
         m.used = True
         db.session.add(m)
@@ -50,6 +52,7 @@ def add_user(line, domain):
     d = UserDomain(username, domain)
     db.session.add(u)
     db.session.add(d)
+    db.session.commit()
     return 1
 
 def main():
