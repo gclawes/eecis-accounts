@@ -9,7 +9,8 @@ class PasswordForm(Form):
     old_password = PasswordField('Old Password', 
                         validators = [validators.Length(min=8, max=50)])
     password = PasswordField('Password', 
-                        validators = [validators.LengthOrEmpty(min=8, max=50)])
+                        validators = [validators.LengthOrEmpty(min=8, max=50),
+                            validators.CrackLib()])
     pw_confirm = PasswordField('Confirm Password',
                                             validators = [validators.LengthOrEmpty(min=8, max=50),
                                                             validators.EqualTo('password', message='Passwords do not match.')])
