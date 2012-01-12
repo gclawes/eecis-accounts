@@ -22,4 +22,9 @@ backend: clean accounts
 	$(TAR) cvf accounts_backend.tar accounts_backend
 	rm -r accounts_backend
 
+database:
+	python accounts -r
+	python accounts -s import_passwd
+	python accounts -s import_old_db
+
 all: web backend
