@@ -54,6 +54,12 @@ def userlist(page = 1, pending = False, sponsored = False, rolloffs = False):
                 query = query.filter(User.sponsor == g.user.username)
             users = query.all()
             for user in users:
+                # send rejection emails, silent reject if comments are empty
+                if sponsored:
+                    mail.sponsor_reject(user)
+                elif g.user_is_admin:
+                    mail.admin_reject(user)
+                # drop rejected users
                 db.session.delete(user)
             db.session.commit()
 

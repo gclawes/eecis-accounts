@@ -17,7 +17,6 @@ For Deploy:
         Admins disable/reenable accounts
         Admins add user as a sponsor
     Create web_only users
-    Cracklib validator
     User type (undergrad, faculty, etc)
         + Import
     Add CAS when a user adds an e-mail address

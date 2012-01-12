@@ -100,7 +100,7 @@ def reset_password(token = None):
                     # Print this for now so we can test it
                     print token
                     # send the user an email with the token
-                    send_token(user.username, user.email, user.reset_token)
+                    send_token(user)
                     return render_template('reset_password_in_mail.html')
                 else:
                     session['cas_redirect'] = url_for('reset_password')
