@@ -24,7 +24,7 @@ from optparse import OptionParser
 import config
 import sys
 import unittest
-from tests import dataset
+import dataset
 
 # Make sure that we have confirguration setup for our application
 try:
