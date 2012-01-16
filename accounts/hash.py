@@ -5,6 +5,20 @@ from hashlib import sha1, md5
 import crypt
 import binascii
 import passlib.hash
+from os import uname
+
+if os.uname()[0] == 'SunOS':
+	# hack to get passlib working on solaris
+	def crypt_hack(secret, hash):
+	    if isinstance(secret, unicode):
+	        secret = secret.encode("utf-8")
+	    if isinstance(hash, bytes):
+	        raise TypeError("hash must be unicode")
+	    else:
+	        hash = hash.encode("utf-8")
+	    return True, crypt.crypt(secret, hash)
+    passlib.utils.safe_os_crypt = crypt_hack
+
 
 def openldap_sha(password):
     password = str(password)
