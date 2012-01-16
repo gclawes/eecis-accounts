@@ -7,7 +7,7 @@ validators. They are designed to follow a similar API.
 
 from flaskext.wtf import validators, ValidationError
 from datetime import datetime
-from ctypescracklib import FascistCheck
+from accounts.ctypescracklib import FascistCheck
 
 def validate_date(format = '', message = ''):
     """
