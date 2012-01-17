@@ -1,8 +1,8 @@
-TAR=tar
-#TAR=gtar
+#TAR=tar
+TAR=gtar
 CHROOT=/home/www
-CHROOT_HTDOCS=/apache/htdocs
-WEBTARGET=${CHROOT}${CHROOT_HTDOCS}
+SCRIPTS=/wsgi-scripts
+WEBTARGET=${CHROOT}${SCRIPTS}
 
 clean: accounts
 	-@rm *.tar
@@ -11,7 +11,7 @@ clean: accounts
 	-@rm accounts/db.sqlite
 
 wsgi: account_launcher.wsgi.base
-	sed s@HTDOCS@${CHROOT_HTDOCS}@ account_launcher.wsgi.base > account_launcher.wsgi
+	sed s@HTDOCS@${SCRIPTS}@ account_launcher.wsgi.base > account_launcher.wsgi
 
 web: wsgi clean accounts
 	cp -r accounts accounts_web
@@ -23,6 +23,7 @@ web: wsgi clean accounts
 
 install_web: web
 	$(TAR) xvf accounts_web.tar -C ${WEBTARGET}
+	mv ${WEBTARGET}/accounts_web ${WEBTARGET}/accounts
 
 backend: clean accounts
 	cp -r accounts accounts_backend

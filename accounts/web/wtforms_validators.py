@@ -95,7 +95,7 @@ def validate_cracklib():
     def validate(form, field):
         if field.data == '':
             return
-        ret = FacistCheck(field.data, form.username.data)
+        ret = FascistCheck(field.data, form.username.data)
         if ret is not None:
             error = "Password rejected: %s." % ret
             raise ValidationError(error)
